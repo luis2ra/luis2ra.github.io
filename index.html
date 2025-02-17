@@ -1,70 +1,81 @@
 <!DOCTYPE html>
-<html lang="es-ve">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>luis2ra.github.io</title>
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='vendor/fonts-googleapis/css/open-sans.css' rel='stylesheet' type='text/css'>
-    <link href='vendor/fonts-googleapis/css/lora.css' rel='stylesheet' type='text/css'>
-
-    <!-- Custom styles for this template -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen Curricular - Luis Altuve</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Navegación -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">Luis R. Altuve C.</a>
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                Menú
-                <i class="fa fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Portada</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">Acerca de</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="portfolio.html">Portafolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="diplomas_certificados.html">Diplomas & Certificaciones</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contacto</a>
-                    </li>
-                </ul>
-            </div>
+    <nav>
+        <div class="logo">
+            <img src="img/python.png" alt="Icono de programador">
+        </div>
+        <div class="nav-links">
+            <a href="#perfil">Perfil</a>
+            <a href="#habilidades">Habilidades</a>
+            <a href="#experiencia">Experiencia Laboral</a>
+            <a href="#educacion">Educación</a>
         </div>
     </nav>
-    <!-- Cabecera -->
-    <header class="masthead" style="background-image: url('img/home-bg.jpg')">
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-10 mx-auto">
-                    <div class="site-heading">
-                        <h1>Luis Altuve</h1>
-                        <span class="subheading">Ingeniero de Sistemas</span>
-                    </div>
-                </div>
-            </div>
+
+    <header class="profile-container">
+        <img src="img/foto-perfil-github.jpg" alt="Foto de Luis Altuve" class="profile-pic">
+        <div>
+            <h1>Luis Rodolfo Altuve Cáceres</h1>
+            <h2>Backend Developer / Ingeniero de Sistemas</h2>
         </div>
     </header>
-    
-    <!-- jQuery y Bootstrap -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script del template -->
-    <script src="js/clean-blog.min.js"></script>
+    <section id="contacto">
+        <h3>Contacto</h3>
+        <p><strong>Email:</strong> <a href="mailto:luis2ra@gmail.com">luis2ra@gmail.com</a></p>
+        <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/luis-altuve/" target="_blank">Perfil Profesional</a></p>
+        <p><strong>Ubicación:</strong> Pamplona, Norte de Santander, Colombia</p>
+    </section>
+
+    <section id="perfil">
+        <h3>Perfil Profesional &lt;&lt; <a href="https://www.linkedin.com/in/luis-altuve/" target="_blank">LinkedIn</a> &gt;&gt; </h3>
+        <p>Siempre interesado en formar parte de nuevos desarrollos y/o desafios, donde la tecnología mejora la calidad de vida.
+        Con más de 15 años de experiencia en Computación, Sistemas de Automatización y Control de Procesos, Redes y Programación.</p>
+    </section>
+
+    <section id="experiencia">
+        <h3>Experiencia Laboral</h3>
+        <ul>
+            <li><strong>Netto Colombia (10/2023 - Actualidad)</strong><br>Analista Programador - Integración de servicios Carfax y Rubricae.</li>
+            <li><strong>Fapro Chile (03/2023 - 05/2023)</strong><br>Back Developer - Mantenimiento de sistemas y certificación ISO 27001.</li>
+            <li><strong>MO-Technologies Colombia (12/2021 - 09/2022)</strong><br>Backend Engineer IV - Desarrollo de API para LifeMD y Fintonic-Galileo-MO.</li>
+            <li><strong>Blooz SAC Perú (12/2020 - 09/2022)</strong><br>Desarrollador Django/Python/REST-API - Desarrollo de tarifas y migración SaaS.</li>
+        </ul>
+    </section>
+
+    <section id="habilidades">
+        <h3>Habilidades Técnicas</h3>
+        <ul>
+            <li>Python, FastAPI, Django, Flask</li>
+            <li>PostgreSQL, SQL Server, MongoDB</li>
+            <li>Microservicios, Integración de APIs</li>
+            <li>AWS (S3, RDS, EC2, ECS), Docker, Kubernetes</li>
+            <li>SCRUM, Git/GitHub, CI/CD (Jenkins, GitHub Actions)</li>
+            <li>ETL (Pentaho, Knime), Data Analysis (Pandas, NumPy)</li>
+            <li>Desarrollo de aplicaciones web</li>
+            <li>Seguridad Informática y conocimientos en ISO 27001</li>
+        </ul>
+    </section>
+
+    <section id="educacion">
+        <h3>Formación Académica</h3>
+        <ul>
+            <li>Diplomado en Gestión para Empresas de Tecnología - ULA (2017)</li>
+            <li>Ingeniero de Sistemas - ULA (2003)</li>
+        </ul>
+    </section>
+
+    <section id="resumen">
+        <h3>Descargar Resumen Curricular</h3>
+        <p><a href="pdf/RC_LuisAltuve2024_es_v1.pdf" target="_blank">Descargar PDF</a></p>
+    </section>
+
 </body>
 </html>
