@@ -1,0 +1,143 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+  
+  /* Estilos de encabezado */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+/* Estilos de secciones */
+section {
+    padding: 40px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 33%;
+}
+
+.profile-image img {
+    width: auto;
+    height: auto;
+}
+
+.text-container {
+    width: 67%;
+}
+
+/* Estilos de habilidades */
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.skill {
+    background-color: #f2f2f2;
+    border-radius: 4px;
+    color: #333;
+    padding: 8px 16px;
+    margin: 8px;
+}
+
+/* Estilos de experiencia */
+.experience {
+    margin-bottom: 40px;
+}
+
+.experience-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.experience-date {
+    font-size: 14px;
+    color: #888;
+}
+
+.experience-description {
+    margin-bottom: 10px;
+}
+
+.logo img {
+    width: 40px; /* Ajusta el tamaño del logo según tus preferencias */
+    height: 40px;
+}
+
+nav {
+    background-color: #333;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a {
+    margin-left: 10px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-links a.active {
+    color: #ff0000; /* Cambia el color de la opción activa */
+}
+
+.nav-links input[type="text"] {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.nav-links a:hover {
+    background-color: darkgray; /* Cambia el color al pasar el cursor por encima */
+}
+
+.btn-curriculum{
+    background-color:#2c5de6;
+    border-radius: 15px;
+    width: 180px;
+    height: 70px;
+    color: white;
+    size: 50px;
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+@media (min-width: 768px) {
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
