@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recocheros Bikers · Sorteo con Ruleta</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root{
+    --noche:#151A2E;
+    --noche-2:#1E2542;
+    --crema:#FFF6E8;
+    --oro:#F5B942;
+    --coral:#FF5D5D;
+    --turquesa:#2EC4B6;
+    --magenta:#E952A0;
+    --violeta:#7B5CFA;
+    --texto-sec:#9AA3C7;
+    --radio:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Nunito',system-ui,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -100px, #2A3358 0%, var(--noche) 60%);
+    color:var(--crema);
+    min-height:100vh;
+  }
+  header{
+    text-align:center;
+    padding:28px 16px 10px;
+  }
+  header .logo{
+    height:clamp(3rem,7vw,4.6rem);
+    width:auto;
+    filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
+  }
+  header h1{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    font-family:'Lilita One',cursive;
+    font-size:clamp(2rem,5vw,3.2rem);
+    letter-spacing:1px;
+    color:var(--oro);
+    text-shadow:0 3px 0 #B37E17, 0 6px 18px rgba(0,0,0,.45);
+  }
+  header p{color:var(--texto-sec);font-weight:600;margin-top:4px}
+
+  .layout{
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:24px;
+    max-width:1100px;
+    margin:20px auto 60px;
+    padding:0 16px;
+  }
+  @media(max-width:860px){.layout{grid-template-columns:1fr}}
+
+  .panel{
+    background:var(--noche-2);
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:var(--radio);
+    padding:18px;
+  }
+  .panel h2{
+    font-family:'Lilita One',cursive;
+    font-size:1.15rem;
+    letter-spacing:.5px;
+    margin-bottom:12px;
+    color:var(--crema);
+  }
+  .panel + .panel{margin-top:20px}
+
+  .fila-input{display:flex;gap:8px}
+  input[type=text]{
+    flex:1;
+    background:var(--noche);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:10px;
+    padding:10px 12px;
+    color:var(--crema);
+    font-family:inherit;
+    font-size:.95rem;
+  }
+  input[type=text]:focus{outline:2px solid var(--oro);outline-offset:1px;border-color:transparent}
+
+  button{
+    font-family:'Nunito',sans-serif;
+    font-weight:800;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    transition:transform .12s, filter .12s;
+  }
+  button:hover{filter:brightness(1.1)}
+  button:active{transform:scale(.96)}
+  button:focus-visible{outline:2px solid var(--crema);outline-offset:2px}
+
+  .btn-add{background:var(--turquesa);color:#08302B;padding:10px 16px;font-size:.95rem}
+  .btn-add.premio{background:var(--magenta);color:#3D0B26}
+
+  ul.lista{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto}
+  ul.lista li{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--noche);
+    border-radius:8px;
+    padding:7px 10px;
+    font-weight:600;
+    font-size:.92rem;
+  }
+  ul.lista li .punto{width:10px;height:10px;border-radius:50%;margin-right:8px;flex:none}
+  ul.lista li span.nombre{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  ul.lista li.ganado span.nombre{text-decoration:line-through;opacity:.5}
+  .quitar{
+    background:transparent;color:var(--texto-sec);
+    font-size:1rem;padding:2px 6px;
+  }
+  .quitar:hover{color:var(--coral)}
+  .vacio{color:var(--texto-sec);font-size:.88rem;margin-top:10px;font-weight:600}
+
+  /* ===== Zona de la ruleta ===== */
+  .zona-ruleta{
+    display:flex;flex-direction:column;align-items:center;gap:18px;
+    padding:24px 18px;
+  }
+  .premio-actual{
+    font-weight:800;
+    background:rgba(245,185,66,.12);
+    border:1px dashed var(--oro);
+    color:var(--oro);
+    padding:8px 18px;
+    border-radius:999px;
+    font-size:.95rem;
+    min-height:38px;
+    display:flex;align-items:center;
+  }
+  .marco{
+    position:relative;
+    width:min(420px,86vw);
+    aspect-ratio:1;
+  }
+  .flecha{
+    position:absolute;
+    top:-6px;left:50%;
+    transform:translateX(-50%);
+    width:0;height:0;
+    border-left:16px solid transparent;
+    border-right:16px solid transparent;
+    border-top:28px solid var(--coral);
+    filter:drop-shadow(0 3px 4px rgba(0,0,0,.5));
+    z-index:5;
+  }
+  #ruleta{
+    width:100%;height:100%;
+    border-radius:50%;
+    box-shadow:0 0 0 10px #2A3358, 0 0 0 13px var(--oro), 0 18px 40px rgba(0,0,0,.5);
+    transition:transform 5.2s cubic-bezier(.12,.6,.08,1);
+  }
+  .centro{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:64px;height:64px;border-radius:50%;
+    background:var(--crema);
+    color:var(--noche);
+    font-family:'Lilita One',cursive;
+    font-size:1.4rem;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 5px var(--oro), 0 4px 12px rgba(0,0,0,.4);
+    z-index:4;
+    user-select:none;
+  }
+  .btn-girar{
+    background:var(--coral);
+    color:#3B0808;
+    font-family:'Lilita One',cursive;
+    font-size:1.3rem;
+    letter-spacing:1px;
+    padding:14px 46px;
+    border-radius:999px;
+    box-shadow:0 5px 0 #B33232;
+  }
+  .btn-girar:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+
+  /* ===== Modal ganador ===== */
+  .overlay{
+    position:fixed;inset:0;
+    background:rgba(10,12,24,.8);
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:50;
+  }
+  .overlay.visible{display:flex}
+  .tarjeta{
+    background:var(--noche-2);
+    border:2px solid var(--oro);
+    border-radius:20px;
+    padding:40px 50px;
+    text-align:center;
+    animation:pop .5s cubic-bezier(.2,1.6,.4,1);
+    max-width:90vw;
+  }
+  @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+  .tarjeta .etiqueta{color:var(--texto-sec);font-weight:700;text-transform:uppercase;letter-spacing:2px;font-size:.8rem}
+  .tarjeta .premio-nombre{color:var(--oro);font-weight:800;font-size:1.1rem;margin-top:4px}
+  .tarjeta .ganador{
+    font-family:'Lilita One',cursive;
+    font-size:clamp(2rem,6vw,3.4rem);
+    margin:14px 0 22px;
+    color:var(--crema);
+    animation:brillo 1.2s ease-in-out infinite alternate;
+  }
+  @keyframes brillo{
+    from{text-shadow:0 0 8px rgba(245,185,66,.3)}
+    to{text-shadow:0 0 26px rgba(245,185,66,.9), 0 0 40px rgba(255,93,93,.5)}
+  }
+  .tarjeta button{background:var(--turquesa);color:#08302B;padding:11px 26px;font-size:1rem}
+
+  canvas#confeti{position:fixed;inset:0;pointer-events:none;z-index:60}
+
+  @media (prefers-reduced-motion:reduce){
+    #ruleta{transition-duration:1.5s}
+    .tarjeta .ganador{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><img src="/img/logo-recocheros-bikers.png" alt="Logo Recocheros Bikers" class="logo"> Recocheros Bikers</h1>
+  <p>Agrega participantes, define premios y gira la ruleta</p>
+</header>
+
+<div class="layout">
+  <div>
+    <section class="panel">
+      <h2>👥 Participantes</h2>
+      <div class="fila-input">
+        <input type="text" id="inputNombre" placeholder="Nombre del participante" maxlength="30">
+        <button class="btn-add" id="btnNombre">Agregar</button>
+      </div>
+      <ul class="lista" id="listaNombres"></ul>
+      <p class="vacio" id="vacioNombres">Aún no hay participantes.</p>
+    </section>
+
+    <section class="panel">
+      <h2>🏆 Premios</h2>
+      <div class="fila-input">
+        <input type="text" id="inputPremio" placeholder="Ej: Bono de $50.000" maxlength="40">
+        <button class="btn-add premio" id="btnPremio">Agregar</button>
+      </div>
+      <ul class="lista" id="listaPremios"></ul>
+      <p class="vacio" id="vacioPremios">Aún no hay premios. Se sortearán en orden.</p>
+    </section>
+  </div>
+
+  <section class="panel zona-ruleta">
+    <div class="premio-actual" id="premioActual">Define al menos un premio para comenzar</div>
+    <div class="marco">
+      <div class="flecha"></div>
+      <canvas id="ruleta" width="600" height="600"></canvas>
+      <div class="centro">🎲</div>
+    </div>
+    <button class="btn-girar" id="btnGirar" disabled>¡GIRAR!</button>
+  </section>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="tarjeta">
+    <div class="etiqueta">Ganador del premio</div>
+    <div class="premio-nombre" id="modalPremio"></div>
+    <div class="ganador" id="modalGanador"></div>
+    <button id="btnCerrar">Continuar</button>
+  </div>
+</div>
+
+<canvas id="confeti"></canvas>
+
+<script>
+const COLORES = ['#F5B942','#FF5D5D','#2EC4B6','#E952A0','#7B5CFA','#FF9F45','#4CC9F0','#9EF01A'];
+let nombres = [];          // {nombre}
+let premios = [];          // {nombre, ganador|null}
+let girando = false;
+let anguloActual = 0;
+
+const $ = id => document.getElementById(id);
+const canvas = $('ruleta'), ctx = canvas.getContext('2d');
+
+/* ---------- Listas ---------- */
+function agregarNombre(){
+  const v = $('inputNombre').value.trim();
+  if(!v) return;
+  if(nombres.some(n => n.toLowerCase() === v.toLowerCase())){ $('inputNombre').value=''; return; }
+  nombres.push(v);
+  $('inputNombre').value='';
+  $('inputNombre').focus();
+  render();
+}
+function agregarPremio(){
+  const v = $('inputPremio').value.trim();
+  if(!v) return;
+  premios.push({nombre:v, ganador:null});
+  $('inputPremio').value='';
+  $('inputPremio').focus();
+  render();
+}
+function render(){
+  // nombres
+  const ln = $('listaNombres'); ln.innerHTML='';
+  nombres.forEach((n,i)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="punto" style="background:${COLORES[i%COLORES.length]}"></span>
+                    <span class="nombre">${esc(n)}</span>`;
+    const b = document.createElement('button');
+    b.className='quitar'; b.textContent='✕'; b.title='Quitar';
+    b.onclick = ()=>{ nombres.splice(i,1); render(); };
+    li.appendChild(b);
+    ln.appendChild(li);
+  });
+  $('vacioNombres').style.display = nombres.length ? 'none':'block';
+
+  // premios
+  const lp = $('listaPremios'); lp.innerHTML='';
+  premios.forEach((p,i)=>{
+    const li = document.createElement('li');
+    if(p.ganador) li.classList.add('ganado');
+    li.innerHTML = `<span class="nombre">🏅 ${esc(p.nombre)}${p.ganador ? ' → <b style="color:var(--oro)">'+esc(p.ganador)+'</b>':''}</span>`;
+    if(!p.ganador){
+      const b = document.createElement('button');
+      b.className='quitar'; b.textContent='✕'; b.title='Quitar';
+      b.onclick = ()=>{ premios.splice(i,1); render(); };
+      li.appendChild(b);
+    }
+    lp.appendChild(li);
+  });
+  $('vacioPremios').style.display = premios.length ? 'none':'block';
+
+  // premio actual
+  const pendiente = premios.find(p=>!p.ganador);
+  if(pendiente){
+    $('premioActual').textContent = '🎁 En juego: ' + pendiente.nombre;
+  } else if(premios.length){
+    $('premioActual').textContent = '✅ ¡Todos los premios fueron sorteados!';
+  } else {
+    $('premioActual').textContent = 'Define al menos un premio para comenzar';
+  }
+
+  $('btnGirar').disabled = girando || nombres.length < 2 || !pendiente;
+  dibujarRuleta();
+}
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+/* ---------- Dibujo de la ruleta ---------- */
+function dibujarRuleta(){
+  const N = nombres.length;
+  const cx=300, cy=300, r=295;
+  ctx.clearRect(0,0,600,600);
+  if(N===0){
+    ctx.fillStyle='#1E2542';
+    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#9AA3C7';
+    ctx.font='600 26px Nunito, sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('Agrega participantes', cx, cy+8);
+    return;
+  }
+  const paso = (Math.PI*2)/N;
+  for(let i=0;i<N;i++){
+    const a0 = i*paso - Math.PI/2, a1 = a0 + paso;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,a0,a1);
+    ctx.closePath();
+    ctx.fillStyle = COLORES[i%COLORES.length];
+    ctx.fill();
+    ctx.strokeStyle='rgba(21,26,46,.6)';
+    ctx.lineWidth=3;
+    ctx.stroke();
+
+    // texto
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(a0 + paso/2);
+    ctx.textAlign='right';
+    ctx.fillStyle='#151A2E';
+    const size = N<=8 ? 26 : N<=14 ? 20 : 15;
+    ctx.font = `800 ${size}px Nunito, sans-serif`;
+    let txt = nombres[i];
+    if(txt.length>16) txt = txt.slice(0,15)+'…';
+    ctx.fillText(txt, r-18, size/3);
+    ctx.restore();
+  }
+}
+
+/* ---------- Girar ---------- */
+function girar(){
+  if(girando || nombres.length<2) return;
+  const premio = premios.find(p=>!p.ganador);
+  if(!premio) return;
+
+  girando = true;
+  $('btnGirar').disabled = true;
+
+  const N = nombres.length;
+  const idxGanador = Math.floor(Math.random()*N);
+  const paso = 360/N;
+  // el segmento i inicia en (i*paso - 90) grados; la flecha está arriba (-90°)
+  // ángulo final para que el centro del segmento ganador quede bajo la flecha:
+  const destinoSegmento = 360 - (idxGanador*paso + paso/2);
+  const vueltas = 6 + Math.floor(Math.random()*3);
+  const anguloFinal = anguloActual + vueltas*360 + ((destinoSegmento - (anguloActual % 360)) + 360) % 360;
+
+  canvas.style.transform = `rotate(${anguloFinal}deg)`;
+  anguloActual = anguloFinal;
+
+  setTimeout(()=>{
+    girando = false;
+    const ganador = nombres[idxGanador];
+    premio.ganador = ganador;
+    nombres.splice(idxGanador,1); // el ganador sale de la ruleta
+    mostrarGanador(premio.nombre, ganador);
+    render();
+  }, 5400);
+}
+
+/* ---------- Modal + confeti ---------- */
+function mostrarGanador(premio, ganador){
+  $('modalPremio').textContent = premio;
+  $('modalGanador').textContent = '🎉 ' + ganador + ' 🎉';
+  $('overlay').classList.add('visible');
+  lanzarConfeti();
+}
+$('btnCerrar').onclick = ()=>{ $('overlay').classList.remove('visible'); pararConfeti(); };
+
+const cfCanvas = $('confeti'), cfCtx = cfCanvas.getContext('2d');
+let particulas = [], confAnim = null;
+function lanzarConfeti(){
+  cfCanvas.width = innerWidth; cfCanvas.height = innerHeight;
+  particulas = Array.from({length:160}, ()=>({
+    x: Math.random()*innerWidth,
+    y: -20 - Math.random()*innerHeight*0.5,
+    w: 6+Math.random()*8,
+    h: 8+Math.random()*10,
+    color: COLORES[Math.floor(Math.random()*COLORES.length)],
+    vy: 2+Math.random()*3.5,
+    vx: -1.5+Math.random()*3,
+    rot: Math.random()*360,
+    vr: -6+Math.random()*12
+  }));
+  if(confAnim) cancelAnimationFrame(confAnim);
+  animarConfeti();
+}
+function animarConfeti(){
+  cfCtx.clearRect(0,0,cfCanvas.width,cfCanvas.height);
+  let vivos = 0;
+  particulas.forEach(p=>{
+    p.y += p.vy; p.x += p.vx; p.rot += p.vr;
+    if(p.y < cfCanvas.height+30) vivos++;
+    cfCtx.save();
+    cfCtx.translate(p.x,p.y);
+    cfCtx.rotate(p.rot*Math.PI/180);
+    cfCtx.fillStyle = p.color;
+    cfCtx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+    cfCtx.restore();
+  });
+  if(vivos>0 && $('overlay').classList.contains('visible')){
+    confAnim = requestAnimationFrame(animarConfeti);
+  } else {
+    cfCtx.clearRect(0,0,cfCanvas.width,cfCanvas.height);
+  }
+}
+function pararConfeti(){
+  if(confAnim) cancelAnimationFrame(confAnim);
+  cfCtx.clearRect(0,0,cfCanvas.width,cfCanvas.height);
+}
+
+/* ---------- Eventos ---------- */
+$('btnNombre').onclick = agregarNombre;
+$('inputNombre').addEventListener('keydown', e=>{ if(e.key==='Enter') agregarNombre(); });
+$('btnPremio').onclick = agregarPremio;
+$('inputPremio').addEventListener('keydown', e=>{ if(e.key==='Enter') agregarPremio(); });
+$('btnGirar').onclick = girar;
+
+render();
+</script>
+</body>
+</html>
