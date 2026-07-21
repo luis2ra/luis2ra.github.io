@@ -143,8 +143,8 @@
   }
   .flecha{
     position:absolute;
-    top:-6px;left:50%;
-    transform:translateX(-50%);
+    top:50%;right:-6px;
+    transform:translateY(-50%) rotate(90deg);
     width:0;height:0;
     border-left:16px solid transparent;
     border-right:16px solid transparent;
@@ -367,7 +367,7 @@ function dibujarRuleta(){
   }
   const paso = (Math.PI*2)/N;
   for(let i=0;i<N;i++){
-    const a0 = i*paso - Math.PI/2, a1 = a0 + paso;
+    const a0 = i*paso, a1 = a0 + paso;
     ctx.beginPath();
     ctx.moveTo(cx,cy);
     ctx.arc(cx,cy,r,a0,a1);
@@ -382,13 +382,13 @@ function dibujarRuleta(){
     ctx.save();
     ctx.translate(cx,cy);
     ctx.rotate(a0 + paso/2);
-    ctx.textAlign='right';
+    ctx.textAlign='center';
     ctx.fillStyle='#151A2E';
     const size = N<=8 ? 26 : N<=14 ? 20 : 15;
     ctx.font = `800 ${size}px Nunito, sans-serif`;
     let txt = nombres[i];
     if(txt.length>16) txt = txt.slice(0,15)+'…';
-    ctx.fillText(txt, r-18, size/3);
+    ctx.fillText(txt, r/2, size/3);
     ctx.restore();
   }
 }
@@ -405,7 +405,7 @@ function girar(){
   const N = nombres.length;
   const idxGanador = Math.floor(Math.random()*N);
   const paso = 360/N;
-  // el segmento i inicia en (i*paso - 90) grados; la flecha está arriba (-90°)
+  // el segmento i inicia en (i*paso) grados; la flecha está a la derecha (0°)
   // ángulo final para que el centro del segmento ganador quede bajo la flecha:
   const destinoSegmento = 360 - (idxGanador*paso + paso/2);
   const vueltas = 6 + Math.floor(Math.random()*3);
