@@ -43,8 +43,11 @@
     font-family:'Lilita One',cursive;
     font-size:clamp(2rem,5vw,3.2rem);
     letter-spacing:1px;
-    color:var(--oro);
-    text-shadow:0 3px 0 #B37E17, 0 6px 18px rgba(0,0,0,.45);
+    background:linear-gradient(180deg, #A6E22E 0%, #7CB816 55%, #5C8F0F 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow:0 6px 18px rgba(0,0,0,.45);
   }
   header p{color:var(--texto-sec);font-weight:600;margin-top:4px}
 
@@ -162,14 +165,18 @@
     position:absolute;top:50%;left:50%;
     transform:translate(-50%,-50%);
     width:64px;height:64px;border-radius:50%;
-    background:var(--crema);
     color:var(--noche);
     font-family:'Lilita One',cursive;
     font-size:1.4rem;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 0 0 5px var(--oro), 0 4px 12px rgba(0,0,0,.4);
+    box-shadow:0 0 0 2px var(--oro), 0 4px 12px rgba(0,0,0,.4);
     z-index:4;
     user-select:none;
+    overflow:hidden;
+  }
+  .centro img{
+    width:100%;height:100%;
+    object-fit:cover;
   }
   .btn-girar{
     background:var(--coral);
@@ -260,7 +267,7 @@
     <div class="marco">
       <div class="flecha"></div>
       <canvas id="ruleta" width="600" height="600"></canvas>
-      <div class="centro">🎲</div>
+      <div class="centro"><img src="/img/logo-recocheros-bikers.png" alt="Logo Recocheros Bikers"></div>
     </div>
     <button class="btn-girar" id="btnGirar" disabled>¡GIRAR!</button>
   </section>
@@ -362,7 +369,7 @@ function dibujarRuleta(){
     ctx.fillStyle='#9AA3C7';
     ctx.font='600 26px Nunito, sans-serif';
     ctx.textAlign='center';
-    ctx.fillText('Agrega participantes', cx, cy+8);
+    ctx.fillText('Agrega participantes', cx, cy+90);
     return;
   }
   const paso = (Math.PI*2)/N;
